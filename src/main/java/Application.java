@@ -81,7 +81,7 @@ public class Application {
 
         System.out.println(
                 data.stream()
-                        .sorted(Comparator.comparing(personne -> personne.getListeNote().stream()
+                        .sorted(Comparator.comparing(personne -> -personne.getListeNote().stream()
                                 .mapToInt(Note::getNote).average().getAsDouble()))
                         .map(etudiant ->
                                 etudiant.getNom().toUpperCase().charAt(0) + "." +
