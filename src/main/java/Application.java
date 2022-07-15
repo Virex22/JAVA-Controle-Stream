@@ -46,10 +46,9 @@ public class Application {
     public static void exercice1() {
         List<Etudiant> data = getData();
 
-        String text = data.stream()
-                .map( etudiant -> etudiant.getNom().toLowerCase(Locale.ROOT) + "." + etudiant.getPrenom().toLowerCase(Locale.ROOT) + "@cesi.com")
-                .collect(Collectors.joining(" - "));
-        System.out.println(text);
+        System.out.println(data.stream()
+                .map( etudiant -> etudiant.getNom().toLowerCase() + "." + etudiant.getPrenom().toLowerCase() + "@cesi.com")
+                .collect(Collectors.joining(" - ")));
     }
 
     public static void exercice2(){
@@ -57,7 +56,7 @@ public class Application {
 
         System.out.println(
                 data.stream()
-                        .filter(etudiant -> etudiant.getPrenom().toLowerCase(Locale.ROOT).charAt(0) == 's')
+                        .filter(etudiant -> etudiant.getPrenom().toLowerCase().startsWith("s"))
                         .sorted(Comparator.comparing(etudiant -> -etudiant.getListeNote().stream().mapToInt(note -> note.getNote()).max().getAsInt()))
                         .map(etudiant -> etudiant.getNom() + " " + etudiant.getPrenom())
                         .findFirst().get());
@@ -72,6 +71,8 @@ public class Application {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
 
+        System.out.println("tableau bien crée avec stream !");
+        System.out.println("contenu du tableau :");
         listNote.forEach(note -> System.out.println(note.getPersonne().getPrenom() + " " + note.getNote()));
     }
 
@@ -81,12 +82,12 @@ public class Application {
         System.out.println(
                 data.stream()
                         .sorted(Comparator.comparing(personne -> personne.getListeNote().stream()
-                                .mapToInt(note -> note.getNote()).average().getAsDouble()))
-                        .map(personne ->
-                                personne.getNom().toUpperCase().charAt(0) + "." +
-                                        personne.getPrenom().toUpperCase().charAt(0) + " (" +
-                                        personne.getListeNote().stream()
-                                                .mapToInt(note -> note.getNote()).max().getAsInt() + ")"
+                                .mapToInt(Note::getNote).average().getAsDouble()))
+                        .map(etudiant ->
+                                etudiant.getNom().toUpperCase().charAt(0) + "." +
+                                        etudiant.getPrenom().toUpperCase().charAt(0) + " (" +
+                                        etudiant.getListeNote().stream()
+                                                .mapToInt(Note::getNote).max().getAsInt() + ")"
                         )
                         .collect(Collectors.joining(" > ")));
     }
